@@ -96,7 +96,6 @@ public class UserController {
             }
 
         } catch (Exception e) {
-
             return new ResponseEntity<>(new CustomError("Something went wrong contact your primary admin"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
