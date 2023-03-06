@@ -2,10 +2,7 @@ package com.eateasy.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -14,7 +11,7 @@ public class Orders {
     @Id
     private long id;
     private String providerEmail;
-    private String userEmail;
+
     private String altName;
     private String altEmail;
     private String altPhoneNumber;
@@ -26,5 +23,10 @@ public class Orders {
     private String productQuantity;
     private String productPrice;
     private String subscription;
+
+    private String placeHolder1;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Users users;
 
 }

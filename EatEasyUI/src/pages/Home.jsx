@@ -12,8 +12,6 @@ import Category from "../components/UI/category/Category.jsx";
 
 import "../styles/home.css";
 
-// import products from "../assets/fake-data/products.js";
-
 import ProductCard from "../components/UI/product-card/ProductCard.jsx";
 
 import whyImg from "../assets/images/location.png";
@@ -22,26 +20,18 @@ import networkImg from "../assets/images/network.png";
 
 import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 import { featureData } from "../constants/FeaturedData.js";
-import AlertBox from "../components/Alert.jsx";
-import { productActions } from "../store/get-products.js";
-import { useDispatch, useSelector } from "react-redux";
-import { GetProductDetails } from "../store/get-products.js";
+import AlertBox from "../components/utility/Alert.jsx";
+
+import { PRODUCT_END_POINT } from "../constants/UrlHelper.js";
 
 const Home = () => {
-  // const dispatch = useDispatch();
-
   const [category, setCategory] = useState("ALL");
   const [allProducts, setAllProducts] = useState([]);
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [warning, setWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState();
   const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //   dispatch(GetProductDetails);
-  // }, []);
-
-  // const [hotPizza, setHotPizza] = useState([]);
+  const [role, setRole] = useState();
 
   useEffect(() => {
     if (
@@ -49,49 +39,14 @@ const Home = () => {
       sessionStorage.getItem("isActive") === "true"
     ) {
       setLoggedIn(true);
+      GetProductDetails();
     }
 
-    /* API call to get products*/
-    GetProductDetails();
-
-    // var produsctList = useSelector((state) => state.products.products);
-    // setAllProducts(produsctList);
+    if (sessionStorage.getItem("role") !== null) {
+      setRole(sessionStorage.getItem("role"));
+    }
   }, []);
 
-  // function GetProductDetails() {
-  //   const requestOptions = {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Access-Control-Allow-Origin": "*",
-  //     },
-  //   };
-
-  //   fetch(PRODUCT_END_POINT, requestOptions)
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         console.log("Done!");
-  //         response.json().then((result) => {
-  //           setAllProducts(result);
-  //         });
-  //         setWarning(false);
-  //       } else {
-  //         response.json().then((error) => {
-  //           setWarning(true);
-  //           setWarningMessage(error.error);
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setWarning(true);
-  //       setWarningMessage(
-  //         "Something went wrong please contact your primary admin"
-  //       );
-  //     });
-  // }
-
-  const PRODUCT_END_POINT = "http://localhost:8080/eateasy/products";
   async function GetProductDetails() {
     const requestOptions = {
       method: "GET",
@@ -108,7 +63,6 @@ const Home = () => {
           response.json().then((result) => {
             setAllProducts(result);
             setProducts(result);
-            sessionStorage.setItem("Products", JSON.stringify(result));
           });
           setWarning(false);
           console.log("Test2");
@@ -133,25 +87,25 @@ const Home = () => {
       setAllProducts(products);
     }
 
-    if (category === "BURGER") {
+    if (category === "DIET") {
       const filteredProducts = products.filter(
-        (item) => item.category === "Burger"
+        (item) => item.category === "DIET"
       );
 
       setAllProducts(filteredProducts);
     }
 
-    if (category === "PIZZA") {
+    if (category === "KETO") {
       const filteredProducts = products.filter(
-        (item) => item.category === "Pizza"
+        (item) => item.category === "KETO"
       );
 
       setAllProducts(filteredProducts);
     }
 
-    if (category === "BREAD") {
+    if (category === "THALI") {
       const filteredProducts = products.filter(
-        (item) => item.category === "Bread"
+        (item) => item.category === "THALI"
       );
 
       setAllProducts(filteredProducts);
@@ -181,22 +135,26 @@ const Home = () => {
                   magni delectus tenetur autem, sint veritatis!
                 </p>
 
-                <div className="hero__btns d-flex align-items-center gap-5 mt-4">
-                  <button className="order__btn d-flex align-items-center justify-content-between">
-                    Order now <i class="ri-arrow-right-s-line"></i>
-                  </button>
+                {isLoggedIn && role === "User" && (
+                  <div className="hero__btns d-flex align-items-center gap-5 mt-4">
+                    <button className="order__btn d-flex align-items-center justify-content-between">
+                      <Link to="/foods">
+                        Order now <i class="ri-arrow-right-s-line"></i>
+                      </Link>
+                    </button>
 
-                  <button className="all__foods-btn">
-                    <Link to="/foods">See all foods</Link>
-                  </button>
-                </div>
+                    <button className="all__foods-btn">
+                      <Link to="/notifications">Order history</Link>
+                    </button>
+                  </div>
+                )}
 
                 <div className=" hero__service  d-flex align-items-center gap-5 mt-5 ">
                   <p className=" d-flex align-items-center gap-2 ">
                     <span className="shipping__icon">
                       <i class="ri-car-line"></i>
                     </span>{" "}
-                    No shipping charge
+                    Fastest Delievery
                   </p>
 
                   <p className=" d-flex align-items-center gap-2 ">
@@ -232,12 +190,10 @@ const Home = () => {
                 we will <span>take care</span>
               </h2>
               <p className="mb-1 mt-4 feature__text">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor,
-                officiis?
-              </p>
-              <p className="feature__text">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Aperiam, eius.{" "}
+                We serve fresh, nutritious and home-made Indian meals in
+                disposable tiffin packs. If you are a Student or a Working
+                Professional or any Individual, who is looking out for healthy
+                food, then we would love to be your daily meal partner
               </p>
             </Col>
 
@@ -258,7 +214,7 @@ const Home = () => {
         </Container>
       </section>
 
-      {isLoggedIn && (
+      {isLoggedIn && role === "User" && (
         <section>
           <Container>
             <Row>
@@ -278,33 +234,29 @@ const Home = () => {
                   </button>
                   <button
                     className={`d-flex align-items-center gap-2 ${
-                      category === "BURGER" ? "foodBtnActive" : ""
+                      category === "DIET" ? "foodBtnActive" : ""
                     } `}
-                    onClick={() => setCategory("BURGER")}
+                    onClick={() => setCategory("DIET")}
                   >
-                    {/* <img src={foodCategoryImg01} alt="" /> */}
-                    <h6> Burger</h6>
+                    <h6> Diet Meals</h6>
                   </button>
 
                   <button
                     className={`d-flex align-items-center gap-2 ${
-                      category === "PIZZA" ? "foodBtnActive" : ""
+                      category === "KETO" ? "foodBtnActive" : ""
                     } `}
-                    onClick={() => setCategory("PIZZA")}
+                    onClick={() => setCategory("KETO")}
                   >
-                    {/* <img src={foodCategoryImg02} alt="" /> */}
-                    <h6>Pizza</h6>
+                    <h6>Keto</h6>
                   </button>
 
                   <button
                     className={`d-flex align-items-center gap-2 ${
-                      category === "BREAD" ? "foodBtnActive" : ""
+                      category === "THALI" ? "foodBtnActive" : ""
                     } `}
-                    onClick={() => setCategory("BREAD")}
+                    onClick={() => setCategory("THALI")}
                   >
-                    {/* <img src={foodCategoryImg03} alt="" /> */}
-
-                    <h6> Bread</h6>
+                    <h6> Thalis's</h6>
                   </button>
                 </div>
               </Col>
@@ -329,13 +281,17 @@ const Home = () => {
             <Col lg="6" md="6">
               <div className="why__tasty-treat">
                 <h2 className="tasty__treat-title mb-4">
-                  Why <span>Tasty Treat?</span>
+                  Why <span>EatEasy?</span>
                 </h2>
                 <p className="tasty__treat-desc">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Dolorum, minus. Tempora reprehenderit a corporis velit,
-                  laboriosam vitae ullam, repellat illo sequi odio esse iste
-                  fugiat dolor, optio incidunt eligendi deleniti!
+                  Our Tiffin box service is designed to deliver our premium
+                  quality food to your doorstep in affordable prices. We prepare
+                  and deliver healthy meals everyday. Inspired by our Indian
+                  roots we have drafted a menu that is a perfect blend of the
+                  traditional cooking methods and recipes paired with fresh and
+                  local produce. For our monthly plan subscription we never
+                  repeat our menu, that means you get different menus for a
+                  monthly plan.
                 </p>
 
                 <ListGroup className="mt-4">
@@ -345,8 +301,8 @@ const Home = () => {
                       foods
                     </p>
                     <p className="choose__us-desc">
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                      Quia, voluptatibus.
+                      We use only fresh & locally sourced vegetables and
+                      grass-fed protein.
                     </p>
                   </ListGroupItem>
 
@@ -355,8 +311,8 @@ const Home = () => {
                       <i class="ri-checkbox-circle-line"></i> Quality support
                     </p>
                     <p className="choose__us-desc">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Qui, earum.
+                      The best of traditional cooking methods and modern healthy
+                      standards.
                     </p>
                   </ListGroupItem>
 
@@ -366,8 +322,7 @@ const Home = () => {
                       location{" "}
                     </p>
                     <p className="choose__us-desc">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Qui, earum.
+                      Search Tiffin Service in your area by different filters
                     </p>
                   </ListGroupItem>
                 </ListGroup>
@@ -377,35 +332,18 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* <section className="pt-0">
-        <Container>
-          <Row>
-            <Col lg="12" className="text-center mb-5 ">
-              <h2>Hot Pizza</h2>
-            </Col>
-
-            {hotPizza.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" key={item.id}>
-                <ProductCard item={item} />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section> */}
-
       <section>
         <Container>
           <Row>
             <Col lg="6" md="6">
               <div className="testimonial ">
-                {/* <h5 className="testimonial__subtitle mb-4">Testimonial</h5> */}
                 <h2 className="testimonial__title mb-4">
                   What our <span>customers</span> are saying
                 </h2>
                 <p className="testimonial__desc">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Distinctio quasi qui minus quos sit perspiciatis inventore
-                  quis provident placeat fugiat!
+                  Our customers are from diverse backgrounds, ranging from
+                  college students to employees of multinational companies. Few
+                  of them are shown here.
                 </p>
 
                 <TestimonialSlider />

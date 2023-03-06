@@ -9,5 +9,4 @@ public interface UserRepository extends JpaRepository<Users,String> {
     Users findByEmailAndPassword(String email, String password);
 
 
-//    User AddEntry(User user);
 }

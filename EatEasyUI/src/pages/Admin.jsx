@@ -3,42 +3,20 @@ import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { EasyEatServices } from "../components/EasyEatServices";
 import { Container, Row, Col } from "reactstrap";
-import { NotificationCards } from "../components/NotificationCards";
-import Alert from "../components/utility/Alert";
-import {
-  ORDER_END_POINT,
-  PROVIDER_ORDER_END_POINT,
-} from "../constants/UrlHelper";
-import SwitchSelector from "react-switch-selector";
 
-export function Notification() {
+import Alert from "../components/utility/Alert";
+
+import {
+  ADMIN_PROVIDER_END_POINT,
+  ADMIN_DELETE_PROVIDER,
+} from "../constants/UrlHelper";
+import { AdminCard } from "../components/AdminCard";
+
+export function Admin() {
   const [warning, setWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState();
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [orders, setOrders] = useState([]);
-  const [status, setStatus] = useState("PENDING");
-
-  const options = [
-    {
-      label: "Pending",
-      value: "PENDING",
-      selectedBackgroundColor: "#1c8f89",
-      innerHeight: 50,
-    },
-    {
-      label: "Closed",
-      value: "CLOSED",
-      selectedBackgroundColor: "#1c8f89",
-    },
-  ];
-
-  const onChange = (newValue) => {
-    setStatus(newValue);
-  };
-
-  const initialSelectedIndex = options.findIndex(
-    ({ value }) => value === "PENDING"
-  );
+  const [providers, setProviders] = useState([]);
 
   useEffect(() => {
     if (
@@ -46,24 +24,10 @@ export function Notification() {
       sessionStorage.getItem("isActive") === "true"
     ) {
       setLoggedIn(true);
-      if (sessionStorage.getItem("role") === "Provider") {
-        getOrder(
-          PROVIDER_ORDER_END_POINT +
-            "?providerEmail=" +
-            sessionStorage.getItem("userEmail") +
-            "&status=" +
-            status
-        );
-      } else if (sessionStorage.getItem("role") === "User")
-        getOrder(
-          ORDER_END_POINT +
-            "?userEmail=" +
-            sessionStorage.getItem("userEmail") +
-            "&status=" +
-            status
-        );
+
+      getOrder(ADMIN_PROVIDER_END_POINT);
     }
-  }, [status]);
+  }, []);
   function getOrder(url) {
     const requestOptions = {
       method: "GET",
@@ -77,14 +41,45 @@ export function Notification() {
       .then((response) => {
         if (response.status === 200) {
           console.log("Done!");
-          if (!url.includes("?id=")) {
-            response.json().then((result) => {
-              setOrders(result);
-              console.log(result);
-            });
-          } else {
-            window.location.reload();
-          }
+
+          response.json().then((result) => {
+            setProviders(result);
+            console.log(result);
+          });
+
+          setWarning(false);
+        } else {
+          setWarning(true);
+          setWarningMessage(
+            "Something went wrong please contact your primary admin"
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setWarning(true);
+        setWarningMessage(
+          "Something went wrong please contact your primary admin"
+        );
+      });
+  }
+
+  function deleteProvider(email) {
+    let deleteProviderRequest = { email };
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(deleteProviderRequest),
+    };
+
+    fetch(ADMIN_DELETE_PROVIDER, requestOptions)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Done!");
+          window.location.reload();
           setWarning(false);
         } else {
           setWarning(true);
@@ -115,7 +110,7 @@ export function Notification() {
           )}
 
           <Container>
-            <Row>
+            {/* <Row>
               <Col lg="3" md="4" sm="6" xs="6" className="mt-5">
                 <p style={{ height: "40px" }}>
                   <SwitchSelector
@@ -127,11 +122,11 @@ export function Notification() {
                   />
                 </p>
               </Col>
-            </Row>
+            </Row> */}
             <Row>
-              {orders.map((item) => (
+              {providers.map((item) => (
                 <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mt-5">
-                  <NotificationCards item={item} getOrder={getOrder} />
+                  <AdminCard item={item} deleteProvider={deleteProvider} />
                 </Col>
               ))}
             </Row>

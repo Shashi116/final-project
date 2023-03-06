@@ -3,17 +3,14 @@ package com.eateasy.controller;
 import com.eateasy.model.Orders;
 import com.eateasy.model.Products;
 import com.eateasy.model.Providers;
+import com.eateasy.model.Users;
 import com.eateasy.requests.OrderInfo;
 import com.eateasy.requests.UserInfo;
 import com.eateasy.responses.CustomError;
-import com.eateasy.model.Users;
 import com.eateasy.responses.OrderResponse;
-import com.eateasy.responses.SuccessfulMessage;
-import com.eateasy.service.interfaces.OrderService;
-import com.eateasy.service.interfaces.ProductService;
-import com.eateasy.service.interfaces.ProviderService;
-import com.eateasy.service.interfaces.UserService;
 import com.eateasy.responses.ProductInfo;
+import com.eateasy.responses.SuccessfulMessage;
+import com.eateasy.service.interfaces.*;
 import com.eateasy.utility.ProviderObjectHelper;
 import com.eateasy.utility.UserObjectHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +37,9 @@ public class UserController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private AdminService adminService;
+
     private final String ADMIN = "Admin";
     private final String USER = "User";
     private final String PROVIDER = "Provider";
@@ -48,14 +48,7 @@ public class UserController {
     public ResponseEntity<Object> add(@RequestBody UserInfo userInfo) {
         try {
 
-            if (userInfo.getRole().equals(ADMIN)) {
-//                if(userService.findAll().stream().filter(obj -> obj.getEmail().equals(users.getEmail())).findAny().isPresent()){
-//                    return new ResponseEntity<>(new CustomError("Email is already taken !"), HttpStatus.INTERNAL_SERVER_ERROR);
-//                }else{
-//                    userService.saveUser(users);
-//                }
-
-            } else if (userInfo.getRole().equals(PROVIDER)) {
+          if (userInfo.getRole().equals(PROVIDER)) {
                 Providers providers = ProviderObjectHelper.prepareProviderObject(userInfo);
                 if (providerService.findAll().stream().filter(obj -> obj.getEmail().equals(providers.getEmail())).findAny().isPresent()) {
                     return new ResponseEntity<>(new CustomError("Email is already taken !"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -83,9 +76,9 @@ public class UserController {
         try {
             Object obj;
             if (role.equals(ADMIN)) {
-                obj = userService.findByEmailAndPassword(email, password);
+                obj = adminService.findByEmailAndPassword(email, password);
             } else if (role.equals(PROVIDER)) {
-                obj = userService.findByEmailAndPassword(email, password);
+                obj = providerService.findByEmailAndPassword(email, password);
             } else {
                 obj = userService.findByEmailAndPassword(email, password);
             }
@@ -96,7 +89,6 @@ public class UserController {
             }
 
         } catch (Exception e) {
-
             return new ResponseEntity<>(new CustomError("Something went wrong contact your primary admin"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -126,9 +118,11 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<Object> getAllOrders(@RequestParam String userEmail) {
+    public ResponseEntity<Object> getAllOrders(@RequestParam String userEmail,@RequestParam String status) {
         try {
-            List<Orders> orders = orderService.findByUserEmail(userEmail);
+            Users users = new Users();
+            users.setEmail(userEmail);
+            List<Orders> orders = orderService.findByUsersAndStatus(users,status);
 
             List<OrderResponse> orderResponseList = UserObjectHelper.prepareOrderResponseObject(orders,providerService);
             return new ResponseEntity<>(orderResponseList, HttpStatus.OK);

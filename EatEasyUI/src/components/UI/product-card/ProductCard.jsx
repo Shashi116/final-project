@@ -3,17 +3,26 @@ import React from "react";
 import "../../../styles/product-card.css";
 
 import { Link } from "react-router-dom";
+import { ImageContainer } from "../../../constants/ImageContainer";
 
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/shopping-cart/cartSlice";
-import defaultImg from "../../../assets/images/default.png";
 
 const ProductCard = (props) => {
   let { id, title, image01, price, providerName, providerEmail } = props.item;
-  image01 = image01 !== undefined && image01 !== null ? image01 : defaultImg;
+  let imgg =
+    image01 !== undefined && image01 !== null && image01 !== ""
+      ? ImageContainer.find((obj) => {
+          return obj[1] === image01;
+        })
+      : ImageContainer.find((obj) => {
+          return obj[1] === "defaultImg";
+        });
   const dispatch = useDispatch();
 
   const addToCart = () => {
+    let image01 = imgg[0];
+    let imgName = imgg[1];
     dispatch(
       cartActions.addItem({
         id,
@@ -22,6 +31,7 @@ const ProductCard = (props) => {
         price,
         providerName,
         providerEmail,
+        imgName,
       })
     );
   };
@@ -29,12 +39,14 @@ const ProductCard = (props) => {
   return (
     <div className="product__item">
       <div className="product__img">
-        <img src={image01} alt="product-img" className="w-50" />
+        <img src={imgg[0]} alt="product-img" className="w-50" />
       </div>
 
       <div className="product__content">
         <h5>
-          <Link to={`/foods/${id}`}>{title}</Link>
+          <Link to={`/foods/${id}`} state={{ item: props.item }}>
+            {title}
+          </Link>
         </h5>
         <p>Provider: {providerName}</p>
         <div className=" d-flex align-items-center justify-content-between ">
