@@ -57,7 +57,7 @@ const Cart = () => {
 
                 <div className="mt-4">
                   <h6>
-                    Subtotal: $
+                    Subtotal: ₹
                     <span className="cart__subtotal">{totalAmount}</span>
                   </h6>
                   <p>Taxes and shipping will calculate at checkout</p>
@@ -95,7 +95,7 @@ const Tr = (props) => {
         <img src={image01} alt="" />
       </td>
       <td className="text-center">{title}</td>
-      <td className="text-center">${price}</td>
+      <td className="text-center">₹{price}</td>
       <td className="text-center">{quantity}X</td>
       <td className="text-center">{providerName}</td>
       <td className="text-center cart__item-del">
