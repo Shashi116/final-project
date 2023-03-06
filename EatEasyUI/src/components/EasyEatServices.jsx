@@ -17,6 +17,7 @@ export function EasyEatServices(typeOfButton) {
         }
       });
       navigate("/home");
+      window.location.reload();
     }
   }
 

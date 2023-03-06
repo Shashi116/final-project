@@ -33,4 +33,11 @@ public class ProviderServiceImpl implements ProviderService {
     public Providers findByEmail(String email) {
         return providerRepository.findByEmail(email);
     }
+
+    @Override
+    public Providers findByEmailAndPassword(String email, String password) {
+        return providerRepository.findByEmailAndPassword(email,password);
+    }
+
+
 }

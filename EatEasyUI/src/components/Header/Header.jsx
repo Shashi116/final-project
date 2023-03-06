@@ -8,25 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { cartUiActions } from "../../store/shopping-cart/cartUiSlice";
 
 import "../../styles/header.css";
-
-const nav__links = [
-  {
-    display: "Home",
-    path: "/home",
-  },
-  {
-    display: "Foods",
-    path: "/foods",
-  },
-  {
-    display: "Cart",
-    path: "/cart",
-  },
-  {
-    display: "Contact",
-    path: "/contact",
-  },
-];
+let nav__links = [];
 
 const Header = () => {
   const menuRef = useRef(null);
@@ -35,6 +17,63 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
+  const [role, setRole] = useState();
+
+  if (role === "Provider") {
+    nav__links = [
+      {
+        display: "Home",
+        path: "/home",
+      },
+      {
+        display: "Products",
+        path: "/provider-products",
+      },
+      {
+        display: "Alerts",
+        path: "/notifications",
+      },
+      {
+        display: "Contact Us",
+        path: "/contact",
+      },
+    ];
+  } else if (role === "Admin") {
+    nav__links = [
+      {
+        display: "Home",
+        path: "/home",
+      },
+      {
+        display: "Providers",
+        path: "/admin-provider",
+      },
+
+      {
+        display: "Contact Us",
+        path: "/contact",
+      },
+    ];
+  } else {
+    nav__links = [
+      {
+        display: "Home",
+        path: "/home",
+      },
+      {
+        display: "Meals",
+        path: "/foods",
+      },
+      {
+        display: "Cart",
+        path: "/cart",
+      },
+      {
+        display: "Contact Us",
+        path: "/contact",
+      },
+    ];
+  }
 
   const toggleCart = () => {
     if (
@@ -45,20 +84,11 @@ const Header = () => {
     }
   };
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => {
-  //     if (
-  //       document.body.scrollTop > 80 ||
-  //       document.documentElement.scrollTop > 80
-  //     ) {
-  //       headerRef.current.classList.add("header__shrink");
-  //     } else {
-  //       headerRef.current.classList.remove("header__shrink");
-  //     }
-  //   });
-
-  //   return () => window.removeEventListener("scroll");
-  // }, []);
+  useEffect(() => {
+    if (sessionStorage.getItem("role") !== null) {
+      setRole(sessionStorage.getItem("role"));
+    }
+  }, []);
 
   return (
     <header className="header" ref={headerRef}>
@@ -69,7 +99,6 @@ const Header = () => {
             <h5>Eat Easy</h5>
           </div>
 
-          {/* ======= menu ======= */}
           <div className="navigation" ref={menuRef} onClick={toggleMenu}>
             <div className="menu d-flex align-items-center gap-5">
               {nav__links.map((item, index) => (
@@ -86,18 +115,29 @@ const Header = () => {
             </div>
           </div>
 
-          {/* ======== nav right icons ========= */}
           <div className="nav__right d-flex align-items-center gap-4">
-            <span className="user">
-              <Link to="/notifications">
-                <i class="ri-notification-3-fill"></i>
-              </Link>
-            </span>
+            {role === "User" && (
+              <>
+                <span className="user">
+                  <Link to="/notifications">
+                    <i class="ri-notification-3-fill"></i>
+                  </Link>
+                </span>
 
-            <span className="cart__icon" onClick={toggleCart}>
-              <i class="ri-shopping-basket-line"></i>
-              <span className="cart__badge">{totalQuantity}</span>
-            </span>
+                <span className="cart__icon" onClick={toggleCart}>
+                  <i class="ri-shopping-basket-line"></i>
+                  <span className="cart__badge">{totalQuantity}</span>
+                </span>
+              </>
+            )}
+
+            {role === "Provider" && (
+              <span className="user">
+                <Link to="/add-products">
+                  <i class="ri-add-circle-fill"></i>
+                </Link>
+              </span>
+            )}
 
             <span className="user">
               <Link to="/auth">

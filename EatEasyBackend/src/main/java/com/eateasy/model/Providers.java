@@ -14,7 +14,7 @@ public class Providers {
     private String email;
     private String name;
     private String address;
-    private String phoneNumber;
+
     private String description;
 
     private String password;

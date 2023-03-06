@@ -1,9 +1,10 @@
 package com.eateasy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,7 +17,11 @@ public class Users {
     @Id
     private String email;
     private String password;
-    private String phoneNumber;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "users",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Orders> orders;
+
 
 
 

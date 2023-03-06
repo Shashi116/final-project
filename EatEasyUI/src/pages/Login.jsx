@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { EasyEatServices } from "../components/EasyEatServices";
 
 import { useNavigate } from "react-router-dom";
-import Alert from "../components/Alert";
+import Alert from "../components/utility/Alert";
 import "../styles/disabled-div.css";
 
 import Spinner from "react-bootstrap/Spinner";
@@ -24,10 +24,6 @@ const Login = () => {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    // const filteredPizza = products.filter((item) => item.category === "Pizza");
-    // const slicePizza = filteredPizza.slice(0, 4);
-    // setHotPizza(slicePizza);
-
     if (
       sessionStorage.getItem("isActive") !== null &&
       sessionStorage.getItem("isActive") === "true"
@@ -78,12 +74,13 @@ const Login = () => {
           console.log("Done!");
           response.json().then((result) => {
             sessionStorage.setItem("userEmail", result.email);
-            // sessionStorage.setItem("userEmail", result.email);  set role
+            sessionStorage.setItem("role", role);
           });
           setWarning(false);
           sessionStorage.setItem("isActive", "true");
 
           navigate("/home");
+          window.location.reload();
         } else {
           response.json().then((error) => {
             setWarning(true);
@@ -131,20 +128,7 @@ const Login = () => {
                 <Spinner animation="grow" variant="primary" />
               </div>
             )}
-            {/* {[
-            "primary",
-            "secondary",
-            "success",
-            "danger",
-            "warning",
-            "info",
-            "light",
-            "dark",
-          ].map((variant) => (
-            <Alert key={variant} variant={variant}>
-              This is a {variant} alert—check it out!
-            </Alert>
-          ))} */}
+
             <div style={{ paddingTop: "30px" }}>
               <Container>
                 <Row>

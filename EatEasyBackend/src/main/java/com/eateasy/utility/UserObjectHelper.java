@@ -1,6 +1,5 @@
 package com.eateasy.utility;
 
-import com.eateasy.controller.UserController;
 import com.eateasy.model.Orders;
 import com.eateasy.model.Products;
 import com.eateasy.model.Users;
@@ -26,7 +25,7 @@ public  class UserObjectHelper {
         users.setEmail(userInfo.getEmail());
         users.setName(userInfo.getName());
         users.setPassword(userInfo.getPassword());
-        users.setPhoneNumber(userInfo.getPhoneNumber());
+
 
         return users;
     }
@@ -46,7 +45,8 @@ public  class UserObjectHelper {
         for(OrderProductDetail orderProductDetail:orderInfo.getOrderProductDetail()){
             Orders orders = new Orders();
             orders.setProviderEmail(orderProductDetail.getProviderEmail());
-            orders.setUserEmail(orderInfo.getUserEmail());
+            orders.setPlaceHolder1(orderProductDetail.getImgName());
+
             orders.setAltName(orderInfo.getAltName());
             orders.setAltEmail(orderInfo.getAltEmail());
             orders.setAltPhoneNumber(orderInfo.getAltPhoneNumber());
@@ -58,6 +58,10 @@ public  class UserObjectHelper {
             orders.setProductQuantity(orderProductDetail.getQuantity());
             orders.setProductPrice(orderProductDetail.getPrice());
             orders.setSubscription(orderInfo.getSubscription());
+
+            Users user = new Users();
+            user.setEmail(orderInfo.getUserEmail());
+            orders.setUsers(user);
             ordersList.add(orders);
         }
 
@@ -75,7 +79,9 @@ public  class UserObjectHelper {
             orderResponse.setSubscription(orders.getSubscription());
             orderResponse.setStatus(orders.getStatus());
             orderResponse.setQuantity(orders.getProductQuantity());
+            orderResponse.setImage01(orders.getPlaceHolder1());
             orderResponseList.add(orderResponse);
+
 
         }
         return orderResponseList;

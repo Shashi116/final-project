@@ -11,21 +11,21 @@ import "../../../styles/category.css";
 
 const categoryData = [
   {
-    display: "Fastfood",
+    display: "Home-Cooked Tiifins",
     imgUrl: categoryImg01,
   },
   {
-    display: "Pizza",
+    display: "Breakfast",
     imgUrl: categoryImg02,
   },
 
   {
-    display: "Asian Food",
+    display: "Diet Meals",
     imgUrl: categoryImg03,
   },
 
   {
-    display: "Row Meat",
+    display: "Keto",
     imgUrl: categoryImg04,
   },
 ];

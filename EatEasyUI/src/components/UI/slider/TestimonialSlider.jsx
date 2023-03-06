@@ -22,38 +22,34 @@ const TestimonialSlider = () => {
     <Slider {...settings}>
       <div>
         <p className="review__text">
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis
-          atque, quam minus totam maiores laborum! Impedit consectetur illum
-          aliquid odit. Odit dolore ipsum quod debitis nostrum necessitatibus
-          quis dolorem quas!"
+          "The menu is quite extensive, and very accommodating to food
+          sensitivities and preferences. The food was delicious and very
+          flavorful!"
         </p>
         <div className=" slider__content d-flex align-items-center gap-3 ">
           <img src={ava01} alt="avatar" className=" rounded" />
-          <h6>Jhon Doe</h6>
+          <h6>Manish Chaurasia</h6>
         </div>
       </div>
       <div>
         <p className="review__text">
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis
-          atque, quam minus totam maiores laborum! Impedit consectetur illum
-          aliquid odit. Odit dolore ipsum quod debitis nostrum necessitatibus
-          quis dolorem quas!"
+          "The food was also superbly delicious!!! Everything we ordered was
+          succulent, delicate, delicious - it was like magic in every little
+          detail!"
         </p>
         <div className="slider__content d-flex align-items-center gap-3 ">
           <img src={ava02} alt="avatar" className=" rounded" />
-          <h6>Mitchell Marsh</h6>
+          <h6>Gajala Apradh</h6>
         </div>
       </div>
       <div>
         <p className="review__text">
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis
-          atque, quam minus totam maiores laborum! Impedit consectetur illum
-          aliquid odit. Odit dolore ipsum quod debitis nostrum necessitatibus
-          quis dolorem quas!"
+          "A wonderful experience. The ingredients are organic & gluten-free.
+          The curry was amazing , service was great.!"
         </p>
         <div className="slider__content d-flex align-items-center gap-3 ">
           <img src={ava03} alt="avatar" className=" rounded" />
-          <h6>Steven Crock</h6>
+          <h6>Devkumar Nishad</h6>
         </div>
       </div>
     </Slider>

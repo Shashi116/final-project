@@ -10,25 +10,19 @@ import { Link } from "react-router-dom";
 import { EasyEatServices } from "../components/EasyEatServices";
 import { useEffect } from "react";
 import defaultImg from "../assets/images/default.png";
-// import { getAllProviderEmails } from "../utility/ProviderEmails";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [providerEmails, setProviderEmails] = useState();
-  useEffect(() => {
-    // const filteredPizza = products.filter((item) => item.category === "Pizza");
-    // const slicePizza = filteredPizza.slice(0, 4);
-    // setHotPizza(slicePizza);
 
+  useEffect(() => {
     if (
       sessionStorage.getItem("isActive") !== null &&
       sessionStorage.getItem("isActive") === "true"
     ) {
       setLoggedIn(true);
     }
-    // setProviderEmails(getAllProviderEmails(cartItems));
   }, []);
   return (
     <Helmet title="Cart">
@@ -44,13 +38,13 @@ const Cart = () => {
                   <table className="table ">
                     <thead>
                       <tr>
-                        <th>Image</th>
-                        <th>Product Title</th>
+                        <th style={{ textAlign: "center" }}>Image</th>
+                        <th style={{ textAlign: "center" }}>Product Title</th>
 
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Provider Name</th>
-                        <th>Delete</th>
+                        <th style={{ textAlign: "center" }}>Price</th>
+                        <th style={{ textAlign: "center" }}>Quantity</th>
+                        <th style={{ textAlign: "center" }}>Provider Name</th>
+                        <th style={{ textAlign: "center" }}>Delete</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -72,12 +66,7 @@ const Cart = () => {
                       <Link to="/foods">Continue Shopping</Link>
                     </button>
                     <button className="addTOCart__btn">
-                      <Link
-                        to="/checkout"
-                        // state={{ providerEmail: providerEmails }}
-                      >
-                        Proceed to checkout
-                      </Link>
+                      <Link to="/checkout">Proceed to checkout</Link>
                     </button>
                   </div>
                 </div>
@@ -107,10 +96,14 @@ const Tr = (props) => {
       </td>
       <td className="text-center">{title}</td>
       <td className="text-center">${price}</td>
-      <td className="text-center">{quantity}px</td>
+      <td className="text-center">{quantity}X</td>
       <td className="text-center">{providerName}</td>
       <td className="text-center cart__item-del">
-        <i class="ri-delete-bin-line" onClick={deleteItem}></i>
+        <i
+          style={{ fontSize: "25px" }}
+          class="ri-delete-bin-line"
+          onClick={deleteItem}
+        ></i>
       </td>
     </tr>
   );

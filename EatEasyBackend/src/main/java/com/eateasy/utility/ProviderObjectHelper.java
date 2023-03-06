@@ -1,8 +1,11 @@
 package com.eateasy.utility;
 
+import com.eateasy.model.Orders;
 import com.eateasy.model.Products;
 import com.eateasy.model.Providers;
 import com.eateasy.requests.UserInfo;
+import com.eateasy.responses.ProviderOrderResponse;
+import com.eateasy.responses.ProviderProductResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +16,47 @@ public class ProviderObjectHelper {
         providers.setEmail(userInfo.getEmail());
         providers.setName(userInfo.getName());
         providers.setPassword(userInfo.getPassword());
-        providers.setPhoneNumber(userInfo.getPhoneNumber());
+
         providers.setAddress(userInfo.getAddress());
         providers.setDescription(userInfo.getDescription());
 
-        Products products1 = new Products();
-        products1.setTitle("Burger");
-        products1.setProviders(providers);
-
-
-        Products products2 = new Products();
-        products2.setTitle("Burger");
-        products2.setProviders(providers);
-
-        List<Products> products = new ArrayList<>();
-        products.add(products1);
-        products.add(products2);
-
-        providers.setProducts(products);
-
         return providers;
+    }
+    public static List<ProviderOrderResponse> prepareProviderOrderObject(List<Orders> ordersList) {
+        List<ProviderOrderResponse> providerOrderResponseList = new ArrayList<>();
+        for(Orders orders:ordersList){
+            ProviderOrderResponse providerOrderResponse = new ProviderOrderResponse();
+            providerOrderResponse.setProductName(orders.getProductName());
+            providerOrderResponse.setSubscription(orders.getSubscription());
+            providerOrderResponse.setStatus(orders.getStatus());
+            providerOrderResponse.setQuantity(orders.getProductQuantity());
+            providerOrderResponse.setPrice(orders.getProductPrice());
+            providerOrderResponse.setUserName(orders.getUsers().getName());
+            providerOrderResponse.setUserAddress(orders.getAltAddress());
+            providerOrderResponse.setUserPhone(orders.getAltPhoneNumber());
+            providerOrderResponse.setId(orders.getId());
+            providerOrderResponse.setImage01(orders.getPlaceHolder1());
+
+            providerOrderResponseList.add(providerOrderResponse);
+        }
+        return providerOrderResponseList;
+
+    }
+
+    public static List<ProviderProductResponse> prepareProviderProductObject(List<Products> productsList) {
+      List<ProviderProductResponse> responses = new ArrayList<>();
+        for(Products products:productsList){
+            ProviderProductResponse providerProductResponse = new ProviderProductResponse();
+            providerProductResponse.setDescription(products.getDescription());
+            providerProductResponse.setTitle(products.getTitle());
+            providerProductResponse.setId(products.getId());
+            providerProductResponse.setImage01(products.getPlaceholder1());
+            providerProductResponse.setPrice(products.getPrice());
+            providerProductResponse.setCategory(products.getCategory());
+
+            responses.add(providerProductResponse);
+        }
+        return responses;
+
     }
 }

@@ -4,13 +4,12 @@ import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
 
-import { getRole } from "../components/utility/EasyEatHelper";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { EasyEatServices } from "../components/EasyEatServices";
-import { Base64 } from "../components/utility/EasyEatHelper";
+
 import Spinner from "react-bootstrap/Spinner";
-import Alert from "../components/Alert";
+import Alert from "../components/utility/Alert";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,15 +17,9 @@ const Register = () => {
   const [loader, setLoader] = useState(false);
   const [warningMessage, setWarningMessage] = useState();
   const [warning, setWarning] = useState(false);
-  // const signupNameRef = useRef();
-  // const signupPasswordRef = useRef();
-  // const signupEmailRef = useRef();
+  const [role, setRole] = useState();
 
   useEffect(() => {
-    // const filteredPizza = products.filter((item) => item.category === "Pizza");
-    // const slicePizza = filteredPizza.slice(0, 4);
-    // setHotPizza(slicePizza);
-
     if (
       sessionStorage.getItem("isActive") !== null &&
       sessionStorage.getItem("isActive") === "true"
@@ -42,19 +35,17 @@ const Register = () => {
 
     setLoader(true);
 
+    console.log(role);
+
     let name = e.target[0].value;
     let email = e.target[1].value;
     let password = e.target[2].value;
-    let phoneNumber = e.target[3].value;
-    let role = getRole(
-      e.target[4].checked,
-      e.target[5].checked,
-      e.target[6].checked
-    );
+    let address = e.target[3].value;
+    let description = e.target[4].value;
 
     password = btoa(password);
 
-    const userInfo = { name, email, password, phoneNumber, role };
+    const userInfo = { name, email, password, address, role, description };
 
     const requestOptions = {
       method: "POST",
@@ -71,7 +62,9 @@ const Register = () => {
 
           sessionStorage.setItem("isActive", "true");
           sessionStorage.setItem("userEmail", email);
+          sessionStorage.setItem("role", role);
           navigate("/home");
+          window.location.reload();
         } else {
           response.json().then((error) => {
             setWarning(true);
@@ -82,6 +75,10 @@ const Register = () => {
 
       .catch((error) => {
         console.error("There was an error!", error);
+        setWarning(true);
+        setWarningMessage(
+          "Something went wrong please contact your primary admin"
+        );
       });
     setLoader(false);
   };
@@ -142,25 +139,42 @@ const Register = () => {
                           // ref={signupPasswordRef}
                         />
                       </div>
-                      <div className="form__group">
-                        <input
-                          placeholder="Your phone number"
-                          required
-                          // ref={signupPasswordRef}
-                        />
-                      </div>
+                      {role === "Provider" && (
+                        <>
+                          <div className="form__group">
+                            <input
+                              placeholder="Your Address"
+                              required
+                              // ref={signupPasswordRef}
+                            />
+                          </div>
+                          <div className="form__group">
+                            <input
+                              placeholder="Abou yourself"
+                              required
+                              // ref={signupPasswordRef}
+                            />
+                          </div>
+                        </>
+                      )}
 
                       <div>
-                        <input type="radio" value="User" name="gender" /> User
-                        &nbsp;&nbsp;
+                        <input
+                          type="radio"
+                          value="User"
+                          name="User"
+                          onClick={(e) => e.target.checked && setRole("User")}
+                        />{" "}
+                        User &nbsp;&nbsp;
                         <input
                           type="radio"
                           value="Provider"
-                          name="gender"
+                          name="User"
+                          onClick={(e) =>
+                            e.target.checked && setRole("Provider")
+                          }
                         />{" "}
                         Provider &nbsp;&nbsp;
-                        <input type="radio" value="Admin" name="gender" /> Admin
-                        &nbsp;&nbsp;
                         <br></br>
                         <br></br>
                       </div>

@@ -10,45 +10,54 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../store/shopping-cart/cartSlice";
 
 import "../styles/product-details.css";
-import defaultImg from "../assets/images/default.png";
 
-import ProductCard from "../components/UI/product-card/ProductCard";
+import { useLocation } from "react-router-dom";
+import { ImageContainer } from "../constants/ImageContainer";
 
 const FoodDetails = () => {
-  const [enteredName, setEnteredName] = useState("");
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [reviewMsg, setReviewMsg] = useState("");
-  const [products, setProducts] = useState(
-    JSON.parse(sessionStorage.getItem("Products"))
-  );
+  const location = useLocation();
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const product = products.find((product) => product.id == id);
-  product.image01 =
-    product.image01 !== undefined && product.image01 !== null
-      ? product.image01
-      : defaultImg;
-  product.image02 =
-    product.image02 !== undefined && product.image02 !== null
-      ? product.image02
-      : defaultImg;
-  product.image03 =
-    product.image03 !== undefined && product.image03 !== null
-      ? product.image03
-      : defaultImg;
+  const product = location.state.item;
+
+  let placeHolder1 =
+    product.image01 !== undefined &&
+    product.image01 !== null &&
+    product.image01 !== ""
+      ? ImageContainer.find((obj) => {
+          return obj[1] === product.image01;
+        })
+      : ImageContainer.find((obj) => {
+          return obj[1] === "defaultImg";
+        });
+
+  let placeHolder2 =
+    product.image02 !== undefined &&
+    product.image02 !== null &&
+    product.image02 !== ""
+      ? ImageContainer.find((obj) => {
+          return obj[1] === product.image02;
+        })
+      : ImageContainer.find((obj) => {
+          return obj[1] === "defaultImg";
+        });
+  let placeHolder3 =
+    product.image03 !== undefined &&
+    product.image03 !== null &&
+    product.image03 !== ""
+      ? ImageContainer.find((obj) => {
+          return obj[1] === product.image03;
+        })
+      : ImageContainer.find((obj) => {
+          return obj[1] === "defaultImg";
+        });
+
   const [previewImg, setPreviewImg] = useState(product.image01);
-  const { title, price, category, desc, image01 } = product;
-
-  const relatedProduct = products.filter((item) => category === item.category);
-
-  useEffect(() => {
-    if (sessionStorage.getItem("Products") !== undefined) {
-      setProducts(JSON.parse(sessionStorage.getItem("Products")));
-    }
-  }, []);
+  const { title, price, category, desc } = product;
 
   const addItem = () => {
+    let image01 = placeHolder1[0];
     dispatch(
       cartActions.addItem({
         id,
@@ -59,14 +68,8 @@ const FoodDetails = () => {
     );
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    console.log(enteredName, enteredEmail, reviewMsg);
-  };
-
   useEffect(() => {
-    setPreviewImg(product.image01);
+    setPreviewImg(placeHolder1[0]);
   }, [product]);
 
   useEffect(() => {
@@ -84,22 +87,22 @@ const FoodDetails = () => {
               <div className="product__images ">
                 <div
                   className="img__item mb-3"
-                  onClick={() => setPreviewImg(product.image01)}
+                  onClick={() => setPreviewImg(placeHolder1[0])}
                 >
-                  <img src={product.image01} alt="" className="w-50" />
+                  <img src={placeHolder1[0]} alt="" className="w-50" />
                 </div>
                 <div
                   className="img__item mb-3"
-                  onClick={() => setPreviewImg(product.image02)}
+                  onClick={() => setPreviewImg(placeHolder2[0])}
                 >
-                  <img src={product.image02} alt="" className="w-50" />
+                  <img src={placeHolder2[0]} alt="" className="w-50" />
                 </div>
 
                 <div
                   className="img__item"
-                  onClick={() => setPreviewImg(product.image03)}
+                  onClick={() => setPreviewImg(placeHolder3[3])}
                 >
-                  <img src={product.image03} alt="" className="w-50" />
+                  <img src={placeHolder3[0]} alt="" className="w-50" />
                 </div>
               </div>
             </Col>
@@ -136,16 +139,6 @@ const FoodDetails = () => {
                 <p>{desc}</p>
               </div>
             </Col>
-
-            <Col lg="12" className="mb-5 mt-4">
-              <h2 className="related__Product-title">You might also like</h2>
-            </Col>
-
-            {relatedProduct.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
-                <ProductCard item={item} />
-              </Col>
-            ))}
           </Row>
         </Container>
       </section>

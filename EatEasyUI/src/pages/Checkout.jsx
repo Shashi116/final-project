@@ -9,8 +9,7 @@ import { EasyEatServices } from "../components/EasyEatServices";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
-import Alert from "../components/Alert";
-// import { useLocation } from "react-router-dom";
+import Alert from "../components/utility/Alert";
 
 const Checkout = () => {
   const [altName, setAltName] = useState("");
@@ -24,7 +23,6 @@ const Checkout = () => {
   const [warningMessage, setWarningMessage] = useState();
   const [subscriptionAmount, setSubscriptionAmount] = useState();
   const [loader, setLoader] = useState(false);
-  // const [totalAmount, setTotalAmount] = useState();
 
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const shippingCost = 30;
@@ -34,13 +32,8 @@ const Checkout = () => {
 
   const ORDER_END_POINT = "http://localhost:8080/eateasy/save-orders";
   const navigate = useNavigate();
-  // const location = useLocation();
 
   useEffect(() => {
-    // const filteredPizza = products.filter((item) => item.category === "Pizza");
-    // const slicePizza = filteredPizza.slice(0, 4);
-    // setHotPizza(slicePizza);
-
     if (
       sessionStorage.getItem("isActive") !== null &&
       sessionStorage.getItem("isActive") === "true"
@@ -53,33 +46,24 @@ const Checkout = () => {
     let orderProductDetail = [];
 
     for (var i = 0; i < cartItems.length; i++) {
-      let { title, quantity, price, providerEmail } = cartItems[i];
+      let { title, quantity, price, providerEmail, imgName } = cartItems[i];
+
       let name = title;
       let obj = {
         name,
         quantity,
         price,
         providerEmail,
+        imgName,
       };
       orderProductDetail.push(obj);
     }
 
     return orderProductDetail;
-    // console.log("Test" + JSON.stringify(orderProductDetail));
-
-    // let orderProductDetail = [
-    //   {
-    //     name,
-    //     quantity,
-    //     price,
-    //     providerEmail,
-    //   },
-    // ];
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // let providerEmail = location.state.providerEmail;  //list
 
     let subscription;
     let flag = false;
@@ -150,11 +134,6 @@ const Checkout = () => {
       setLoader(false);
     }
   };
-
-  function onchangeHandler(e) {
-    console.log(e.target.value);
-    console.log(e.target.checked);
-  }
 
   return (
     <Helmet title="Checkout">

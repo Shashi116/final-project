@@ -8,5 +8,7 @@ public class OrderProductDetail {
     private String quantity;
     private String price;
     private String providerEmail;
+
+    private String imgName;
   ;
 }

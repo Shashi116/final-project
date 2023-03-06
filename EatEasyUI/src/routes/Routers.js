@@ -10,6 +10,9 @@ import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { Notification } from "../pages/Notification";
+import { AddProduct } from "../pages/AddProduct";
+import { AllProviderProducts } from "../pages/AllProviderProducts";
+import { Admin } from "../pages/Admin";
 
 const Routers = () => {
   return (
@@ -24,7 +27,9 @@ const Routers = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/notifications" element={<Notification />} />
-      notifications
+      <Route path="/add-products" element={<AddProduct />} />
+      <Route path="/provider-products" element={<AllProviderProducts />} />
+      <Route path="/admin-provider" element={<Admin />} />
     </Routes>
   );
 };

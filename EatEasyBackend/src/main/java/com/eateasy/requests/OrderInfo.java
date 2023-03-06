@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class OrderInfo {
 
+
     private String userEmail;
     private String altName;
     private String altEmail;

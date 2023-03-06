@@ -1,8 +1,6 @@
 package com.eateasy.service.interfaces;
 
-import com.eateasy.model.Products;
 import com.eateasy.model.Providers;
-import com.eateasy.model.Users;
 
 import java.util.List;
 
@@ -14,4 +12,8 @@ public interface ProviderService {
     public void deleteProvider(Providers providers);
 
     public Providers findByEmail(String email);
+
+    Providers findByEmailAndPassword(String email,String password);
+
+
 }

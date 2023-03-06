@@ -1,6 +1,7 @@
 package com.eateasy.service.implementatins;
 
 import com.eateasy.model.Products;
+import com.eateasy.model.Providers;
 import com.eateasy.repository.ProductRepository;
 import com.eateasy.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-//    @Override
-//    public List<ProductInfo> findProductInfo() {
-//        return productRepository.findProductInfo();
-//    }
+    @Override
+    public List<Products> findByProviders(Providers providers) {
+        return productRepository.findByProviders(providers);
+    }
+
+    @Override
+    public  void deleteById(Integer id) {
+        productRepository.deleteById(id);
+    }
+
 }
