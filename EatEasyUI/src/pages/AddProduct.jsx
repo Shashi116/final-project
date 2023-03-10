@@ -11,7 +11,10 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "../components/utility/Alert";
 
-import { validObjectCheck } from "../components/utility/validChecks";
+import {
+  validateString,
+  validObjectCheck,
+} from "../components/utility/validChecks";
 import { productCategory } from "../constants/ProductCategoryHelper";
 
 import Select from "react-select";
@@ -78,6 +81,9 @@ export function AddProduct() {
     if (!validObjectCheck(category)) {
       setWarning(true);
       setWarningMessage("Please select the category");
+    } else if (!validateString(title)) {
+      setWarning(true);
+      setWarningMessage("Product title can not have number");
     } else {
       let providers = { email: sessionStorage.getItem("userEmail") };
       const products = {

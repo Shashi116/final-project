@@ -10,6 +10,7 @@ import { EasyEatServices } from "../components/EasyEatServices";
 
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "../components/utility/Alert";
+import { validateEmail } from "../components/utility/validChecks";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -43,43 +44,48 @@ const Register = () => {
     let address = e.target[3].value;
     let description = e.target[4].value;
 
-    password = btoa(password);
+    if (!validateEmail(email)) {
+      setWarning(true);
+      setWarningMessage("Please add valid email address");
+    } else {
+      password = btoa(password);
 
-    const userInfo = { name, email, password, address, role, description };
+      const userInfo = { name, email, password, address, role, description };
 
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(userInfo),
-    };
-    fetch(REGISTER_END_POINT, requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("Done!");
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(userInfo),
+      };
+      fetch(REGISTER_END_POINT, requestOptions)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log("Done!");
 
-          sessionStorage.setItem("isActive", "true");
-          sessionStorage.setItem("userEmail", email);
-          sessionStorage.setItem("role", role);
-          navigate("/home");
-          window.location.reload();
-        } else {
-          response.json().then((error) => {
-            setWarning(true);
-            setWarningMessage(error.error);
-          });
-        }
-      })
+            sessionStorage.setItem("isActive", "true");
+            sessionStorage.setItem("userEmail", email);
+            sessionStorage.setItem("role", role);
+            navigate("/home");
+            window.location.reload();
+          } else {
+            response.json().then((error) => {
+              setWarning(true);
+              setWarningMessage(error.error);
+            });
+          }
+        })
 
-      .catch((error) => {
-        console.error("There was an error!", error);
-        setWarning(true);
-        setWarningMessage(
-          "Something went wrong please contact your primary admin"
-        );
-      });
+        .catch((error) => {
+          console.error("There was an error!", error);
+          setWarning(true);
+          setWarningMessage(
+            "Something went wrong please contact your primary admin"
+          );
+        });
+    }
     setLoader(false);
   };
 
@@ -120,7 +126,6 @@ const Register = () => {
                           type="text"
                           placeholder="How should I call you"
                           required
-                          // ref={signupNameRef}
                         />
                       </div>
                       <div className="form__group">
@@ -128,32 +133,23 @@ const Register = () => {
                           type="email"
                           placeholder="Your Email Address"
                           required
-                          // ref={signupEmailRef}
                         />
                       </div>
                       <div className="form__group">
                         <input
                           type="password"
+                          minlength="4"
                           placeholder="Have strong Password"
                           required
-                          // ref={signupPasswordRef}
                         />
                       </div>
                       {role === "Provider" && (
                         <>
                           <div className="form__group">
-                            <input
-                              placeholder="Your Address"
-                              required
-                              // ref={signupPasswordRef}
-                            />
+                            <input placeholder="Your Address" required />
                           </div>
                           <div className="form__group">
-                            <input
-                              placeholder="Abou yourself"
-                              required
-                              // ref={signupPasswordRef}
-                            />
+                            <input placeholder="Abou yourself" required />
                           </div>
                         </>
                       )}

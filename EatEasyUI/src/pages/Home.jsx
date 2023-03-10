@@ -131,8 +131,10 @@ const Home = () => {
                 </h1>
 
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui
-                  magni delectus tenetur autem, sint veritatis!
+                  We serve fresh, nutritious and home-made Indian meals in
+                  disposable tiffin packs. If you are a Student or a Working
+                  Professional or any Individual, who is looking out for healthy
+                  food, then we would love to be your daily meal partner
                 </p>
 
                 {isLoggedIn && role === "User" && (

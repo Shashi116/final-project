@@ -50,7 +50,6 @@ const Login = () => {
     );
 
     password = btoa(password);
-
     const requestOptions = {
       method: "GET",
       headers: {
@@ -151,15 +150,11 @@ const Login = () => {
                         />
                       </div>
                       <div>
-                        <input type="radio" value="User" name="gender" /> User
+                        <input type="radio" value="User" name="User" /> User
                         &nbsp;&nbsp;
-                        <input
-                          type="radio"
-                          value="Provider"
-                          name="gender"
-                        />{" "}
+                        <input type="radio" value="Provider" name="User" />{" "}
                         Provider &nbsp;&nbsp;
-                        <input type="radio" value="Admin" name="gender" /> Admin
+                        <input type="radio" value="Admin" name="User" /> Admin
                         &nbsp;&nbsp;
                         <br></br>
                         <br></br>

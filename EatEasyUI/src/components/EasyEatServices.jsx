@@ -54,8 +54,7 @@ export function EasyEatServices(typeOfButton) {
               className="order__btn d-flex align-items-center justify-content-between"
               onClick={logoutHandler}
             >
-              Here is way to termiante the session{" "}
-              <i class="ri-arrow-right-s-line"></i>
+              Log out <i class="ri-arrow-right-s-line"></i>
             </button>
 
             <br></br>

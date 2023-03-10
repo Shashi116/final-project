@@ -100,7 +100,7 @@ const FoodDetails = () => {
 
                 <div
                   className="img__item"
-                  onClick={() => setPreviewImg(placeHolder3[3])}
+                  onClick={() => setPreviewImg(placeHolder3[0])}
                 >
                   <img src={placeHolder3[0]} alt="" className="w-50" />
                 </div>

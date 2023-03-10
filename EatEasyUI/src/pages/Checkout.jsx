@@ -10,6 +10,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "../components/utility/Alert";
+import {
+  validateNumber,
+  validateEmail,
+  validateString,
+} from "../components/utility/validChecks";
 
 const Checkout = () => {
   const [altName, setAltName] = useState("");
@@ -68,19 +73,33 @@ const Checkout = () => {
     let subscription;
     let flag = false;
 
-    if (e.target[e.target.length - 2].checked) {
-      subscription = "Yearly";
-      setSubscriptionAmount(300);
-    } else if (e.target[e.target.length - 3].checked) {
-      subscription = "Monthly";
-      setSubscriptionAmount(25);
-    } else if (e.target[e.target.length - 4].checked) {
-      subscription = "Weekly";
-      setSubscriptionAmount(7);
-    } else {
+    if (altPhoneNumber.length !== 10) {
       setWarning(true);
-      setWarningMessage("Please select subscription");
+      setWarningMessage("Please add valid phone number");
       flag = true;
+    } else if (altPostalCode.length !== 6) {
+      setWarning(true);
+      setWarningMessage("Please add valid postal code");
+      flag = true;
+    } else if (!validateEmail(altEmail)) {
+      setWarning(true);
+      setWarningMessage("Please add valid email address");
+      flag = true;
+    } else {
+      if (e.target[e.target.length - 2].checked) {
+        subscription = "Yearly";
+        setSubscriptionAmount(300);
+      } else if (e.target[e.target.length - 3].checked) {
+        subscription = "Monthly";
+        setSubscriptionAmount(25);
+      } else if (e.target[e.target.length - 4].checked) {
+        subscription = "Weekly";
+        setSubscriptionAmount(7);
+      } else {
+        setWarning(true);
+        setWarningMessage("Please select subscription");
+        flag = true;
+      }
     }
 
     if (!flag) {
@@ -185,9 +204,11 @@ const Checkout = () => {
                   </div>
                   <div className="form__group">
                     <input
-                      type="number"
                       placeholder="Phone number"
                       required
+                      onKeyPress={(e) => {
+                        validateNumber(e);
+                      }}
                       onChange={(e) => setAltPhoneNumber(e.target.value)}
                     />
                   </div>
@@ -201,9 +222,11 @@ const Checkout = () => {
                   </div>
                   <div className="form__group">
                     <input
-                      type="text"
                       placeholder="Postal code"
                       required
+                      onKeyPress={(e) => {
+                        validateNumber(e);
+                      }}
                       onChange={(e) => setAltPostalCode(e.target.value)}
                     />
                   </div>

@@ -46,8 +46,7 @@ public class AdminController {
         }
     }
 
-    //GET - TO get all providers  admin-providers
-//    POST - To remove providers admin-delete
+
 
 
 }
