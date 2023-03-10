@@ -149,7 +149,7 @@ const Register = () => {
                             <input placeholder="Your Address" required />
                           </div>
                           <div className="form__group">
-                            <input placeholder="Abou yourself" required />
+                            <input placeholder="About yourself" required />
                           </div>
                         </>
                       )}
