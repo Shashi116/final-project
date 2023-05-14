@@ -33,7 +33,7 @@ const Footer = () => {
 
               <ListGroupItem className=" delivery__time-item border-0 ps-0">
                 <span>Saturday- Sunday</span>
-                <p>12:00am - 11:00pm</p>
+                <p>12:00pm - 11:00pm</p>
               </ListGroupItem>
             </ListGroup>
           </Col>
@@ -73,27 +73,27 @@ const Footer = () => {
               <p className="m-0">Follow: </p>
               <span>
                 {" "}
-                <Link to="https://www.facebook.com/muhib160">
+                <Link to="https://www.facebook.com/">
                   <i class="ri-facebook-line"></i>
                 </Link>{" "}
               </span>
 
               <span>
-                <Link to="https://github.com/muhib160">
+                <Link to="https://github.com/">
                   <i class="ri-github-line"></i>
                 </Link>
               </span>
 
               <span>
                 {" "}
-                <Link to=" https://www.youtube.com/c/MuhibsTechDiary">
+                <Link to=" https://www.youtube.com/">
                   <i class="ri-youtube-line"></i>
                 </Link>{" "}
               </span>
 
               <span>
                 {" "}
-                <Link to=" https://www.linkedin.com/in/muhib160/">
+                <Link to=" https://www.linkedin.com/in">
                   <i class="ri-linkedin-line"></i>
                 </Link>{" "}
               </span>

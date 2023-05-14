@@ -11,7 +11,7 @@ export function EasyEatServices(typeOfButton) {
       sessionStorage.getItem("isActive") === "true"
     ) {
       sessionStorage.setItem("isActive", "false");
-      Object.keys(localStorage).forEach((key) => {
+      Object.keys(sessionStorage).forEach((key) => {
         if (key !== "isActive") {
           sessionStorage.removeItem(key);
         }

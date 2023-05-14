@@ -89,11 +89,16 @@ public  class UserObjectHelper {
 
     public static String getProviderName(String providerEmail, ProviderService providerService) throws Exception {
         try {
-            return providerService.findByEmail(providerEmail).getName();
+            try {
+                return providerService.findByEmail(providerEmail).getName();
+            } catch (Exception e) {
+                return "Provider deactivated";
+            }
 
         } catch (Exception exception) {
             throw new Exception("Unable to fetch the data");
         }
+
 
     }
 
